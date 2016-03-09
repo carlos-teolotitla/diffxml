@@ -223,7 +223,7 @@ public class DULPatch {
             xPathIndex++;
         }
 
-        assert domIndex == xPathIndex;
+//        assert domIndex == xPathIndex;
         return domIndex;
     }
 
