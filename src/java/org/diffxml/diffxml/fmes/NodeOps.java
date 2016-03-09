@@ -112,7 +112,9 @@ public final class NodeOps {
      * @return The XPath to the node as a String
      */
     public static String getXPath(final Node n) {
-
+        if(1==1){
+            return XPathOps.getXPath(n);
+        }
  
         String xpath;
         

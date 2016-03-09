@@ -32,6 +32,7 @@ import org.w3c.dom.traversal.DocumentTraversal;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.NodeIterator;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathConstants;
@@ -40,7 +41,16 @@ import javax.xml.xpath.XPathExpressionException;
 public class DULPatch {
 
     private XPath mXPath;
+    private NamespaceContext context;
 
+    public DULPatch(NamespaceContext namespaceContext) {
+        this();
+        context = namespaceContext;
+        mXPath.setNamespaceContext(context);
+    }
+    public DULPatch() {
+        mXPath = XPathFactory.newInstance().newXPath();
+    }
     /**
      * Perform update operation.
      *
@@ -543,8 +553,14 @@ public class DULPatch {
                 
             case Node.ELEMENT_NODE:
 
-                ins = doc.createElementNS(getNameSpaceFromAttr(opAttrs),
-                        getNameFromAttr(opAttrs));
+//                ins = doc.createElementNS(getNameSpaceFromAttr(opAttrs),
+//                        getNameFromAttr(opAttrs));
+                String nameFromAttr = getNameFromAttr(opAttrs);
+                if(nameFromAttr.contains(":")){
+                    ins = doc.createElementNS(context.getNamespaceURI(nameFromAttr.split(":")[0]),nameFromAttr);
+                }else {
+                    ins = doc.createElement(getNameFromAttr(opAttrs));
+                }
                 insertNode(siblings, parentNode, domcn, charpos, ins, doc);
                 break;
 
@@ -851,7 +867,7 @@ public class DULPatch {
     public final void apply(final Document doc, final Document patch) 
         throws PatchFormatException {
 
-        mXPath = XPathFactory.newInstance().newXPath();
+       // mXPath = XPathFactory.newInstance().newXPath();
 
         NodeIterator ni = ((DocumentTraversal) patch).createNodeIterator(
                 patch.getDocumentElement(), NodeFilter.SHOW_ELEMENT,

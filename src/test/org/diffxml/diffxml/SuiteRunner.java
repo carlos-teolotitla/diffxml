@@ -116,11 +116,11 @@ public class SuiteRunner {
             File fB = new File(fA.getAbsolutePath().replace("A.xml", "B.xml"));
             
             //Uncomment following to see list of files being compared
-            //System.out.println("Got: " + fA.getAbsolutePath() 
-            //        + " " + fB.getAbsolutePath());
+            System.out.println("Got: " + fA.getAbsolutePath()
+                    + " " + fB.getAbsolutePath());
             
             //Use the following to run on a single file
-            //runFMESTest(new File("/home/adrian/workspace/diffxml_cvs/suite/brianA.xml"), new File("/home/adrian/workspace/diffxml_cvs/suite/brianB.xml"));
+//            runFMESTest(new File("/home/adrian/workspace/diffxml_cvs/suite/brianA.xml"), new File("/home/adrian/workspace/diffxml_cvs/suite/brianB.xml"));
             runFMESTest(fA, fB);
         }
     }

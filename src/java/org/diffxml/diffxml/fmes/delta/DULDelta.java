@@ -165,7 +165,7 @@ public class DULDelta implements DeltaIF {
                 || n.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
             if (n.getLocalName() != null) {
                 ins.setAttribute(DULConstants.NAMESPACE, n.getNamespaceURI());
-                ins.setAttribute(DULConstants.NAME, n.getLocalName());
+                ins.setAttribute(DULConstants.NAME, n.getNodeName());
             } else {
                 ins.setAttribute(DULConstants.NAME, n.getNodeName());
             }
