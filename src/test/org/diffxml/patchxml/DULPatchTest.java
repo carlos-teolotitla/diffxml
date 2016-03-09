@@ -30,6 +30,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
+import javax.xml.namespace.NamespaceContext;
+import java.util.Iterator;
+
 /**
  * Class to test applying DUL Patches.
  * 
@@ -880,17 +883,18 @@ public class DULPatchTest {
                 "<delta>"
                 + "<insert parent=\"/a\" nodetype=\"" 
                 + Node.ELEMENT_NODE + "\" "
-                + "childno=\"2\" name=\"c\" ns=\"http://new.com\"/>"
+                + "childno=\"2\" name=\"n:c\" ns=\"http://example.com\"/>"
                 + "</delta>");
 
         try {
-            (new DULPatch()).apply(doc1, patch);
+            PatchXML.debug=false;
+            (new DULPatch(new NContext())).apply(doc1, patch);
             assertEquals(1, 
                     doc1.getDocumentElement().getElementsByTagNameNS(
                             "http://example.com", "b").getLength());
             assertEquals(1, 
                     doc1.getDocumentElement().getElementsByTagNameNS(
-                            "http://new.com", "c").getLength());
+                            "http://example.com", "c").getLength());
 
         } catch (PatchFormatException e) {
             fail("Caught exception " + e);
@@ -914,6 +918,25 @@ public class DULPatchTest {
         } catch (PatchFormatException e) {
             fail("Caught exception " + e);
         }
+    }
+
+    public static class NContext implements NamespaceContext {
+
+        public String getNamespaceURI(String prefix) {
+            if("n".equals(prefix)) {
+                return "http://example.com";
+            }
+            return null;
+        }
+
+        public String getPrefix(String namespaceURI) {
+            return null;
+        }
+
+        public Iterator getPrefixes(String namespaceURI) {
+            return null;
+        }
+
     }
     
 }

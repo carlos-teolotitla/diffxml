@@ -131,6 +131,9 @@ public class XPathOps {
             case Node.COMMENT_NODE:
                 parent = n.getParentNode();
                 break;
+            case Node.CDATA_SECTION_NODE:
+                parent = n.getParentNode();
+                break;
             default:
                 throw new IllegalStateException("Unexpected Node type" + n.getNodeType());
         }
