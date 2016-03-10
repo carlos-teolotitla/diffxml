@@ -100,6 +100,6 @@ public final class DULConstants {
     public static final String NAMESPACE = "ns";
     
     /** Namespace of DUL. **/
-    public static final String DUL_NAMESPACE = "http://www.adrianmouat.com/dul";
+    public static final String DUL_NAMESPACE = "http://www.namespace.com/dul";
     
 }

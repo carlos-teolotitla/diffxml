@@ -8,12 +8,15 @@ import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.diffxml.diffxml.fmes.Fmes;
 import org.diffxml.patchxml.DULPatch;
 import org.diffxml.patchxml.PatchFormatException;
 import org.junit.Test;
 import org.w3c.dom.Document;
+
+import javax.xml.namespace.NamespaceContext;
 
 /**
  * Runs all the test cases in the suite.
@@ -79,7 +82,7 @@ public class SuiteRunner {
             fail("Caught IO exception:" + e.getMessage());
         }
         
-        DULPatch patcher = new DULPatch();
+        DULPatch patcher = new DULPatch(new NContext());
         try {
             //Note the diff will modify dA, so need to read in again
             dA = DOMOps.getDocument(fA);
@@ -123,6 +126,25 @@ public class SuiteRunner {
 //            runFMESTest(new File("/home/adrian/workspace/diffxml_cvs/suite/brianA.xml"), new File("/home/adrian/workspace/diffxml_cvs/suite/brianB.xml"));
             runFMESTest(fA, fB);
         }
+    }
+
+    public static class NContext implements NamespaceContext {
+
+        public String getNamespaceURI(String prefix) {
+            if("gmr".equals(prefix)) {
+                return "http://www.gnome.org/gnumeric/v5";
+            }
+            return null;
+        }
+
+        public String getPrefix(String namespaceURI) {
+            return null;
+        }
+
+        public Iterator getPrefixes(String namespaceURI) {
+            return null;
+        }
+
     }
     
 }

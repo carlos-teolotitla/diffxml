@@ -134,6 +134,9 @@ public class XPathOps {
             case Node.CDATA_SECTION_NODE:
                 parent = n.getParentNode();
                 break;
+            case Node.PROCESSING_INSTRUCTION_NODE:
+                parent = n.getParentNode();
+                break;
             default:
                 throw new IllegalStateException("Unexpected Node type" + n.getNodeType());
         }

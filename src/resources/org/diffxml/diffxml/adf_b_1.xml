@@ -22,5 +22,21 @@
                 <common:suppressed></common:suppressed>
             </activity:component-definition>
         </activity:container>
+        <activity:container id="CONTAINER B">
+            <activity:component-definition>
+                <common:asset-reference>
+                    <common:reference-id>1</common:reference-id>
+                    <common:asset-type>activity</common:asset-type>
+                </common:asset-reference>
+            </activity:component-definition>
+        </activity:container>
+        <activity:container id="CONTAINER B1">
+            <activity:component-definition>
+                <common:asset-reference>
+                    <common:reference-id>1</common:reference-id>
+                    <common:asset-type>activity</common:asset-type>
+                </common:asset-reference>
+            </activity:component-definition>
+        </activity:container>
     </activity:sequence>
 </activity:activity>
