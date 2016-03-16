@@ -28,9 +28,10 @@ public class SpikeTest extends DiffXmlUtils {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    //----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // Implementation
 //----------------------------------------------------------------------------------------------------------------------
+
     @Test
     public void test_diff_a_and_a_1() throws Exception {
 
@@ -38,11 +39,12 @@ public class SpikeTest extends DiffXmlUtils {
 
         File fileA = getFile("./adf_a.xml");
         Document delta = diff.diff(fileA, getFile("./adf_a_1.xml"));
+        System.out.println("/----------DELTA----------/");
         System.out.println(getString(delta));
         Document documentA = getDocument(fileA);
         PatchXML.debug = false;
         new DULPatch(commonContext).apply(documentA, delta);
-//    new DULPatch().apply(documentA, delta);
+        System.out.println("/----------NEW A----------/");
         System.out.println(getString(documentA));
         xpath.setNamespaceContext(commonContext);
         assertThat(((Node) xpath.compile("//activity:activity/activity:sequence[1]/activity:container[2]").evaluate(documentA, XPathConstants.NODE)).getAttributes().getNamedItem("id").getNodeValue(), is("CONTAINER A1"));
@@ -52,10 +54,14 @@ public class SpikeTest extends DiffXmlUtils {
 
 
     /*
-    Create A
-    Create B from A
-    Edit B and create B1
-    Edit A and create A1 update (patch) B1 with the new A1
+     Create A
+     Create A1 and B from A
+     Edit A1                            (added container A1)
+     Edit B                             (added container B)
+     Create B1 from B
+     Edit B1                            (added container B1)
+     Patch B with A1                    (patched with container A1)
+     Patch B1 with A1                   (patched with container A1)
     */
     @Test
     public void test_patch_on_forked_files() throws Exception {
@@ -70,12 +76,37 @@ public class SpikeTest extends DiffXmlUtils {
         Document documentB = getDocument(fileB);
         Document documentB1 = getDocument(fileB1);
 
+        System.out.println("/----------DELTA----------/");
+        System.out.println(getString(deltaA));
+
         new DULPatch(commonContext).apply(documentB1, deltaA);
         new DULPatch(commonContext).apply(documentB, deltaA);
 
 
+        System.out.println("/----------NEW B----------/");
+        System.out.println(getString(documentB));
+        System.out.println("/----------NEW B1----------/");
+        System.out.println(getString(documentB1));
+
+    }
+
+    @Test
+    public void test_patch_with_a_change_in_the_middle() throws Exception {
+
+        File fileB = getFile("adf_b.xml");
+        File fileB1 = getFile("adf_b_1.xml");
+
+        Document deltaA = getDocument(getFile("delta.xml"));
+        Document documentB = getDocument(fileB);
+        Document documentB1 = getDocument(fileB1);
+
         System.out.println("/----------DELTA----------/");
         System.out.println(getString(deltaA));
+
+        new DULPatch(commonContext).apply(documentB1, deltaA);
+        new DULPatch(commonContext).apply(documentB, deltaA);
+
+
         System.out.println("/----------NEW B----------/");
         System.out.println(getString(documentB));
         System.out.println("/----------NEW B1----------/");

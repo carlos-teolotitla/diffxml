@@ -665,12 +665,11 @@ public class DULPatch {
 
             if (leftover > 0) {
                 if (DOMOps.isText(delNode.getNextSibling())) {
-                    deleted.setNodeValue(deleted.getNodeValue() 
+                    deleted.setNodeValue(deleted.getNodeValue()
                             + deleteText(delNode.getNextSibling(), 1, leftover,
                                     doc).getNodeValue());
                 } else {
-                    throw new PatchFormatException(
-                    "length past end of text");
+                    throw new PatchFormatException(String.format("length past end of text. Conflict Value: %s - %s",deletedText,newText));
                 }
             }
             delNode.getParentNode().removeChild(delNode);
@@ -918,7 +917,7 @@ public class DULPatch {
                 }
             } catch (PatchFormatException e) {
                 throw new PatchFormatException(
-                        "Error at operation:\n"
+                        "CONFLICT DETECTED:\n"
                         + DOMOps.getNodeAsStringDeep(op), e);
             }
             op = ni.nextNode();
